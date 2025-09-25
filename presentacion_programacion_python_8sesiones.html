@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a la Programación en Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .presentation {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 2rem;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.6s ease;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .slide-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .slide-content {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .session-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .session-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .session-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .session-card.clickable::after {
+            content: "▶ Ver detalles";
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(255, 215, 0, 0.9);
+            color: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .session-card.clickable:hover::after {
+            opacity: 1;
+        }
+
+        .session-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .session-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #FFF;
+        }
+
+        .session-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            border-left: 4px solid #FFD700;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-btn, .home-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover, .home-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .home-btn {
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(10px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .final-message {
+            font-size: 1.8rem;
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin: 2rem 0;
+            border: 2px solid #FFD700;
+        }
+
+        .activity-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #FFD700;
+        }
+
+        .activity-title {
+            font-size: 1.4rem;
+            color: #FFD700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-content {
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .objective-list {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .objective-list h4 {
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .time-indicator {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .exercise-box h4 {
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin-bottom: 1rem;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #FFD700;
+            color: #333;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .detail-slide {
+            padding: 1rem;
+            max-width: 1200px;
+        }
+
+        .detail-slide .slide-title {
+            font-size: 2.5rem;
+        }
+
+        .detail-content {
+            text-align: left;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #FFD700; }
+            to { text-shadow: 0 0 30px #FFA500, 0 0 40px #FFD700; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide.active .session-card,
+        .slide.active .feature-item,
+        .slide.active .stat-item {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .slide.active .session-card:nth-child(1) { animation-delay: 0.1s; }
+        .slide.active .session-card:nth-child(2) { animation-delay: 0.2s; }
+        .slide.active .session-card:nth-child(3) { animation-delay: 0.3s; }
+        .slide.active .session-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @media (max-width: 768px) {
+            .slide-title { font-size: 2rem; }
+            .slide-subtitle { font-size: 1.2rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .session-grid { grid-template-columns: 1fr; }
+            .slide { padding: 1rem; }
+            .detail-slide .slide-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">8</span>
+        </div>
+
+        <!-- Slide 1: Portada -->
+        <div class="slide active">
+            <div class="slide-content">
+                <h1 class="slide-title">Creación Digital y Pensamiento Computacional</h1>
+                <p class="slide-subtitle">Introducción a la Programación en Python</p>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">8</div>
+                        <div>Sesiones</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1º</div>
+                        <div>Bachillerato</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">0</div>
+                        <div>Conocimientos previos</div>
+                    </div>
+                </div>
+                <div class="final-message">
+                    "La programación no es solo escribir código, es resolver problemas de manera creativa"
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Enfoque metodológico -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Enfoque Metodológico</h1>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Aprender Haciendo</h3>
+                        <p>Mínima teoría, máxima práctica con ejercicios intercalados</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Progresión Gradual</h3>
+                        <p>De conceptos básicos a programas completos paso a paso</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎮</div>
+                        <h3>Gamificación</h3>
+                        <p>Juegos de lógica y desafíos creativos para mantener la motivación</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🤝</div>
+                        <h3>Colaborativo</h3>
+                        <p>Trabajo individual y en equipo, aprendiendo unos de otros</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Creatividad</h3>
+                        <p>Proyectos personalizados conectados con sus intereses</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔧</div>
+                        <h3>Error como Aprendizaje</h3>
+                        <p>Normalizar errores y convertirlos en oportunidades</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Vista general de sesiones -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sesiones del Curso</h1>
+                <p class="slide-subtitle">Haz clic en cada sesión para ver los detalles</p>
+                <div class="session-grid">
+                    <div class="session-card clickable" onclick="goToSession(9)">
+                        <div class="session-number">Sesión 1</div>
+                        <div class="session-title">¡Bienvenidos al mundo de la programación!</div>
+                        <div class="session-description">
+                            • ¿Por qué programar?<br>
+                            • Instrucciones y secuenciación<br>
+                            • Actividad "Robot humano"<br>
+                            • Sin ordenadores: pensamiento lógico puro
+                        </div>
+                    </div>
+                    <div class="session-card clickable" onclick="goToSession(10)">
+                        <div class="session-number">Sesión 2</div>
+                        <div class="session-title">Algoritmos y Python</div>
+                        <div class="session-description">
+                            • Algoritmos y diagramas de flujo<br>
+                            • Verificación Python en Linux, o trabajo con Python online<br>
+                            • Primer programa: ¡Hola Mundo!<br>
+                            • Calculadora del área del triángulo
+                        </div>
+                    </div>
+                    <div class="session-card clickable" onclick="goToSession(11)">
+                        <div class="session-number">Sesión 3</div>
+                        <div class="session-title">Juegos de lógica y datos</div>
+                        <div class="session-description">
+                            • Lightbot (programación visual)<br>
+                            • Code.org Hour of Code<br>
+                            • Tipos de datos: int, float, str, bool<br>
+                            • Proyecto: "Mi perfil digital"
+                        </div>
+                    </div>
+                    <div class="session-card clickable" onclick="goToSession(12)">
+                        <div class="session-number">Sesión 4</div>
+                        <div class="session-title">Variables y operadores</div>
+                        <div class="session-description">
+                            • Variables como "cajones con etiquetas"<br>
+                            • Operadores aritméticos y de comparación<br>
+                            • Proyecto: "La calculadora mágica"<br>
+                            • Calculadoras temáticas personalizadas
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Más sesiones -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sesiones del Curso (continuación)</h1>
+                <div class="session-grid">
+                    <div class="session-card clickable" onclick="goToSession(13)">
+                        <div class="session-number">Sesión 5</div>
+                        <div class="session-title">Interacción y decisiones</div>
+                        <div class="session-description">
+                            • Input y output con input() y print()<br>
+                            • Estructuras condicionales: if, elif, else<br>
+                            • Operadores lógicos: and, or, not<br>
+                            • Proyecto: "El adivino digital"
+                        </div>
+                    </div>
+                    <div class="session-card clickable" onclick="goToSession(14)">
+                        <div class="session-number">Sesión 6</div>
+                        <div class="session-title">Bucles y repeticiones</div>
+                        <div class="session-description">
+                            • Estructuras repetitivas: for y while<br>
+                            • La función range() y sus variaciones<br>
+                            • Proyecto: "El generador de patrones"<br>
+                            • Arte ASCII con bucles
+                        </div>
+                    </div>
+                    <div class="session-card clickable" onclick="goToSession(15)">
+                        <div class="session-number">Sesión 7</div>
+                        <div class="session-title">Listas y diccionarios</div>
+                        <div class="session-description">
+                            • Listas: creación, modificación, recorrido<br>
+                            • Diccionarios: pares clave-valor<br>
+                            • Métodos: append(), remove(), keys(), values()<br>
+                            • Proyecto: "La agenda digital"
+                        </div>
+                    </div>
+                    <div class="session-card clickable" onclick="goToSession(16)">
+                        <div class="session-number">Sesión 8</div>
+                        <div class="session-title">Funciones y proyecto final</div>
+                        <div class="session-description">
+                            • Definición de funciones con def<br>
+                            • Parámetros y valores de retorno<br>
+                            • Alcance de variables (local vs global)<br>
+                            • Proyecto final: "Mi primera aplicación"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Evaluación -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sistema de Evaluación</h1>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">10%</div>
+                        <div>Participación</div>
+                        <p style="margin-top: 1rem; opacity: 0.8;">Actividades en clase, ejercicios del robot humano, juegos de lógica</p>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50%</div>
+                        <div>Ejercicios Prácticos</div>
+                        <p style="margin-top: 1rem; opacity: 0.8;">Funcionamiento del código, proyectos mini de cada sesión</p>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">40%</div>
+                        <div>Proyecto Final</div>
+                        <p style="margin-top: 1rem; opacity: 0.8;">Creatividad y aplicación integrada de conceptos aprendidos</p>
+                    </div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h3>🎯 Evaluación Continua</h3>
+                        <p>Cada programa que funciona es un éxito</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>🤝 Trabajo Colaborativo</h3>
+                        <p>Testing cruzado y ayuda entre compañeros</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>🎨 Creatividad</h3>
+                        <p>Proyectos personalizados según intereses</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>📈 Adaptabilidad</h3>
+                        <p>Diferentes niveles según el ritmo de cada estudiante</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Recursos -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Recursos y Herramientas</h1>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h3>🖥️ IDE Recomendado</h3>
+                        <p>Visual Studio Code con Python Extension Pack (opción propietario) </p>  
+                    </div>
+                    <div class="feature-item">
+                        <h3>🌐 Práctica Online</h3>
+                        <p>Repl.it, Python.org/shell, online-python.com/  para pruebas rápidas</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>🎮 Juegos de Lógica</h3>
+                        <p>Lightbot, Code.org, Python Challenge</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>📚 Documentación</h3>
+                        <p>Python.org, tutoriales en YouTube, recursos extra</p>
+                    </div>
+                </div>
+                
+                <div class="objective-list">
+                    <h4>Adaptaciones para diferentes niveles:</h4>
+                    <ul style="text-align: left; margin-left: 2rem;">
+                        <li><strong>Estudiantes avanzados:</strong> Módulos como turtle, random, time</li>
+                        <li><strong>Estudiantes con dificultades:</strong> Más tiempo en conceptos básicos, trabajo en parejas</li>
+                        <li><strong>Apoyo adicional:</strong> Ejercicios de refuerzo y material complementario</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Objetivos del curso -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Objetivos del Curso</h1>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">🧠</div>
+                        <h3>Pensamiento Lógico</h3>
+                        <p>Desarrollo de habilidades de resolución de problemas</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💡</div>
+                        <h3>Creatividad Digital</h3>
+                        <p>De consumidores a creadores de tecnología</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔧</div>
+                        <h3>Herramientas del Futuro</h3>
+                        <p>Python: puerta de entrada al mundo tecnológico</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🌟</div>
+                        <h3>Competencias del s.XXI</h3>
+                        <p>Preparación para un mundo digitalizado</p>
+                    </div>
+                </div>
+                <div class="final-message">
+                    <h2>Meta Final</h2>
+                    <p>Al finalizar las 8 sesiones, el alumnado será capaz de crear programas interactivos, resolver problemas mediante código y aplicar el pensamiento computacional a situaciones reales.</p>
+                    <br>
+                    <p><strong>¡Bienvenidos al apasionante mundo de la programación!</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Cierre -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">¡Comenzamos!</h1>
+                <div class="final-message">
+                    <h2>Consejos Metodológicos Clave</h2>
+                    <div style="text-align: left; margin: 2rem 0;">
+                        <p><strong>1. Aprender haciendo:</strong> Mínima teoría, máxima práctica</p>
+                        <p><strong>2. Error como aprendizaje:</strong> Normalizar y analizar errores juntos</p>
+                        <p><strong>3. Programación social:</strong> Fomentar trabajo colaborativo</p>
+                        <p><strong>4. Conexión con intereses:</strong> Relacionar ejercicios con sus hobbies</p>
+                        <p><strong>5. Celebrar pequeños logros:</strong> Cada programa que funciona es un éxito</p>
+                    </div>
+                    <p><strong>¿Listos para programar?</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SESIÓN 1 DETALLADA -->
+        <div class="slide detail-slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sesión 1: ¡Bienvenidos al mundo de la programación!</h1>
+                
+                <div class="detail-content">
+                    <div class="objective-list">
+                        <h4>Objetivos de la sesión:</h4>
+                        <ul>
+                            <li>Comprender qué es la programación y por qué es importante</li>
+                            <li>Identificar el concepto de instrucción y secuenciación</li>
+                            <li>Realizar las primeras experiencias prácticas sin ordenadores</li>
+                        </ul>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🎯 Actividad 1: ¿Para qué programar?</div>
+                        <div class="time-indicator">⏱️ 10 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Desarrollo:</strong></p>
+                            <ol class="step-list">
+                                <li>Presentar casos reales donde se usa programación: aplicaciones móviles, videojuegos, Netflix, Spotify, redes sociales</li>
+                                <li>Debate grupal: "¿Qué dispositivos que usáis diariamente funcionan con programación?"</li>
+                                <li>Los estudiantes escriben en un papel 3 ejemplos de tecnología que usan a diario</li>
+                                <li>Puesta en común: crear un mapa mental en la pizarra</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">📝 Actividad 2: Instrucciones y secuenciación</div>
+                        <div class="time-indicator">⏱️ 15 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Desarrollo:</strong></p>
+                            <ol class="step-list">
+                                <li>Explicar el concepto usando la analogía de una receta de cocina</li>
+                                <li>Ejercicio individual: "Escribir las instrucciones para hacer un bocadillo de jamón y queso"</li>
+                                <li>Los estudiantes escriben paso a paso, sin asumir conocimientos previos</li>
+                                <li>Algunos voluntarios leen sus instrucciones</li>
+                                <li>Reflexión: ¿Qué pasa si cambiamos el orden? ¿Y si omitimos pasos?</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🤖 Actividad 3: El Robot Humano</div>
+                        <div class="time-indicator">⏱️ 20 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Preparación:</strong></p>
+                            <ul>
+                                <li>Designar punto A (puerta) y punto B (pizarra)</li>
+                                <li>Colocar algunos obstáculos simples (sillas, mochilas)</li>
+                            </ul>
+                            <p><strong>Desarrollo:</strong></p>
+                            <ol class="step-list">
+                                <li>Un estudiante hace de "robot" (ojos vendados o cerrados)</li>
+                                <li>El resto de la clase da instrucciones para llegar de A a B</li>
+                                <li>Reglas: Solo comandos simples como "avanza 2 pasos", "gira a la derecha", "para"</li>
+                                <li>Cambiar roles: que varios estudiantes sean el robot</li>
+                                <li>Reflexión final: ¿Qué diferencias hay entre dar instrucciones a una persona y a un ordenador?</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <h4>💡 Evaluación/Cierre</h4>
+                        <p><strong>Actividad individual:</strong> Cada estudiante escribe una secuencia de 5 pasos para una actividad cotidiana (lavarse los dientes, hacer la cama, etc.)</p>
+                        <p><strong>Pregunta de salida:</strong> "¿Qué diferencia hay entre dar instrucciones a una persona y a un ordenador?"</p>
+                        <p><strong>Tarea para casa:</strong> Observar 3 situaciones donde siguen instrucciones en orden (recetas, manuales, GPS, etc.)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SESIÓN 2 DETALLADA -->
+        <div class="slide detail-slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sesión 2: Algoritmos y Python - Primeros pasos</h1>
+                
+                <div class="detail-content">
+                    <div class="objective-list">
+                        <h4>Objetivos de la sesión:</h4>
+                        <ul>
+                            <li>Entender qué son los algoritmos y diagramas de flujo</li>
+                            <li>Instalar Python y realizar primeros programas</li>
+                            <li>Escribir el primer código en Python</li>
+                        </ul>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">📊 Actividad 1: Algoritmos y diagramas de flujo</div>
+                        <div class="time-indicator">⏱️ 15 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Desarrollo:</strong></p>
+                            <ol class="step-list">
+                                <li>Repasar ejemplos cotidianos: freír un huevo, calcular área de triángulo</li>
+                                <li>Crear en la pizarra un diagrama de flujo simple para "Decidir qué ropa ponerse"</li>
+                                <li>Ejercicio en parejas: Crear un algoritmo para "Cruzar un semáforo de forma segura"</li>
+                                <li>Cada pareja presenta su algoritmo</li>
+                                <li>Reflexión: ¿Por qué es importante el orden y las condiciones?</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">💻 Actividad 2: Instalación de Python</div>
+                        <div class="time-indicator">⏱️ 10 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Preparación del entorno:</strong></p>
+                            <ol class="step-list">
+                                <li>Guía paso a paso para instalar Python desde python.org</li>
+                                <li>Instalación de Visual Studio Code</li>
+                                <li>Configuración de Python Extension Pack</li>
+                                <li>Verificación: ejecutar <code>python --version</code> en terminal</li>
+                                <li>Alternativa online: abrir repl.it para quien tenga dificultades</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🎉 Actividad 3: ¡Hola Mundo!</div>
+                        <div class="time-indicator">⏱️ 20 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Primer programa:</strong></p>
+                            <div class="code-block">
+# Mi primer programa
+print("¡Hola Mundo!")
+                            </div>
+                            <p><strong>Ejercicios progresivos:</strong></p>
+                            <ol class="step-list">
+                                <li>Escribir y ejecutar el programa "Hola Mundo"</li>
+                                <li>Personalizar: <code>print("Hola, soy [TU NOMBRE]")</code></li>
+                                <li>Agregar más líneas con información personal</li>
+                                <li>Programa del área del triángulo (del PDF)</li>
+                            </ol>
+                            <div class="code-block">
+# Ejercicio 2: Calculadora básica del triángulo
+base = 5
+altura = 8
+area = (base * altura) / 2
+print("El área del triángulo es:", area)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <h4>💡 Evaluación/Cierre</h4>
+                        <p><strong>Demostración individual:</strong> Cada estudiante debe mostrar su programa funcionando</p>
+                        <p><strong>Reflexión:</strong> "¿Qué ha sido lo más difícil? ¿Qué os ha sorprendido?"</p>
+                        <p><strong>Mini-desafío para casa:</strong> Crear un programa que calcule el área de un rectángulo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SESIÓN 3 DETALLADA -->
+        <div class="slide detail-slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sesión 3: Juegos de lógica y tipos de datos</h1>
+                
+                <div class="detail-content">
+                    <div class="objective-list">
+                        <h4>Objetivos de la sesión:</h4>
+                        <ul>
+                            <li>Desarrollar pensamiento lógico con juegos</li>
+                            <li>Comprender los tipos de datos básicos</li>
+                            <li>Experimentar con variables</li>
+                        </ul>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🎮 Actividad 1: Juegos de lógica</div>
+                        <div class="time-indicator">⏱️ 25 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Estructura de la actividad:</strong></p>
+                            <ol class="step-list">
+                                <li><strong>Obligatorio:</strong> Lightbot (lightbot.com) - Completar al menos los primeros 8 niveles</li>
+                                <li><strong>Recomendable:</strong> Code.org Hour of Code - Si terminan Lightbot</li>
+                                <li><strong>Avanzado:</strong> Python Challenge - Para estudiantes muy rápidos</li>
+                                <li>Trabajo individual en ordenadores/tablets</li>
+                                <li>El profesor circula ayudando y observando estrategias</li>
+                            </ol>
+                            <p><strong>Reflexión grupal (últimos 5 min):</strong></p>
+                            <ul>
+                                <li>¿Qué estrategias habéis usado para resolver los puzzles?</li>
+                                <li>¿En qué se parecen estos juegos a programar?</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">📊 Actividad 2: Tipos de datos</div>
+                        <div class="time-indicator">⏱️ 20 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Explicación interactiva (10 min):</strong></p>
+                            <ul>
+                                <li><strong>Enteros (int):</strong> Edad, número de hermanos, likes en Instagram</li>
+                                <li><strong>Flotantes (float):</strong> Altura, peso, nota media</li>
+                                <li><strong>Cadenas (str):</strong> Nombre, canción favorita, ciudad</li>
+                                <li><strong>Booleanos (bool):</strong> ¿Tienes mascotas? ¿Practicas deporte?</li>
+                            </ul>
+                            <p><strong>Ejercicio práctico (10 min):</strong></p>
+                            <div class="code-block">
+# Ejercicio: Mi perfil digital
+nombre = "Ana García"        # str
+edad = 16                    # int
+altura = 1.65               # float
+es_estudiante = True        # bool
+
+print(f"Me llamo {nombre}")
+print(f"Tengo {edad} años")
+print(f"Mido {altura} metros")
+print(f"¿Soy estudiante? {es_estudiante}")
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <h4>💡 Mini-desafío: Perfil digital personal</h4>
+                        <p><strong>Crear un programa con:</strong></p>
+                        <ul>
+                            <li>Al menos 5 variables de diferentes tipos</li>
+                            <li>Información personal (nombre, edad, aficiones, etc.)</li>
+                            <li>Usar print() para mostrar toda la información</li>
+                        </ul>
+                        <p><strong>Intercambio:</strong> Los estudiantes intercambian códigos y ejecutan el programa del compañero</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SESIÓN 4 DETALLADA -->
+        <div class="slide detail-slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sesión 4: Variables, constantes y operadores</h1>
+                
+                <div class="detail-content">
+                    <div class="objective-list">
+                        <h4>Objetivos de la sesión:</h4>
+                        <ul>
+                            <li>Dominar el concepto de variables y constantes</li>
+                            <li>Aplicar operadores aritméticos y de comparación</li>
+                            <li>Crear programas con cálculos</li>
+                        </ul>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">📦 Actividad 1: Variables y constantes</div>
+                        <div class="time-indicator">⏱️ 10 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Explicación con analogía:</strong></p>
+                            <ul>
+                                <li>Variables = "cajones con etiquetas" que pueden cambiar de contenido</li>
+                                <li>Constantes = "cajas fuertes" que no cambian nunca</li>
+                                <li>Ejemplos: PI = 3.14159, VELOCIDAD_LUZ = 299792458</li>
+                            </ul>
+                            <p><strong>Ejercicio rápido:</strong> Clasificar si estos datos deberían ser variables o constantes: edad de una persona, número de días del año, temperatura actual, nombre de usuario.</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🧮 Actividad 2: Operadores aritméticos</div>
+                        <div class="time-indicator">⏱️ 15 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Demostración interactiva:</strong></p>
+                            <div class="code-block">
+# Operadores básicos
+a = 10
+b = 3
+
+print("Suma:", a + b)           # 13
+print("Resta:", a - b)          # 7
+print("Multiplicación:", a * b) # 30
+print("División:", a / b)       # 3.33...
+print("División entera:", a // b) # 3
+print("Módulo:", a % b)         # 1
+print("Potencia:", a ** b)      # 1000
+                            </div>
+                            <p><strong>Ejercicio práctico:</strong> Calcular el precio final con descuento e IVA</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🎯 Actividad 3: "La calculadora mágica"</div>
+                        <div class="time-indicator">⏱️ 20 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Proyecto gamificado:</strong> Crear calculadoras temáticas</p>
+                            <ul>
+                                <li><strong>Deportes:</strong> Calcular estadísticas de fútbol, tiempos de carrera</li>
+                                <li><strong>Música:</strong> Calcular duración de playlist, precio de conciertos</li>
+                                <li><strong>Gaming:</strong> Calcular puntuación, nivel, experiencia</li>
+                                <li><strong>Estudios:</strong> Calcular nota media, créditos necesarios</li>
+                            </ul>
+                            <div class="code-block">
+# Ejemplo: Calculadora de gaming
+experiencia_actual = 2500
+experiencia_por_partida = 150
+partidas_jugadas = 8
+
+experiencia_ganada = experiencia_por_partida * partidas_jugadas
+experiencia_total = experiencia_actual + experiencia_ganada
+
+print(f"Has ganado {experiencia_ganada} puntos de experiencia")
+print(f"Experiencia total: {experiencia_total}")
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <h4>💡 Desafío creativo</h4>
+                        <p><strong>Crear una calculadora para un deporte o hobby favorito</strong></p>
+                        <p>Debe incluir al menos 4 operaciones diferentes y mostrar resultados con mensajes descriptivos</p>
+                        <p><strong>Presentación voluntaria:</strong> Los más creativos muestran su calculadora a la clase</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SESIÓN 5 DETALLADA -->
+        <div class="slide detail-slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sesión 5: Interacción y decisiones</h1>
+                
+                <div class="detail-content">
+                    <div class="objective-list">
+                        <h4>Objetivos de la sesión:</h4>
+                        <ul>
+                            <li>Implementar entrada y salida de datos</li>
+                            <li>Usar estructuras condicionales</li>
+                            <li>Crear programas interactivos</li>
+                        </ul>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">💬 Actividad 1: Input y Output</div>
+                        <div class="time-indicator">⏱️ 10 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Explicación práctica:</strong></p>
+                            <div class="code-block">
+# Entrada de datos
+nombre = input("¿Cómo te llamas? ")
+edad = int(input("¿Cuántos años tienes? "))
+
+# Salida formateada
+print(f"Hola {nombre}, tienes {edad} años")
+
+# Cálculo con entrada del usuario
+altura = float(input("¿Cuánto mides (en metros)? "))
+print(f"Mides {altura*100} centímetros")
+                            </div>
+                            <p><strong>Concepto clave:</strong> input() siempre devuelve texto (str), hay que convertir con int() o float()</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🤔 Actividad 2: Estructuras condicionales</div>
+                        <div class="time-indicator">⏱️ 15 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Explicación paso a paso:</strong></p>
+                            <div class="code-block">
+# Ejemplo básico
+edad = int(input("¿Cuántos años tienes? "))
+
+if edad < 13:
+    print("Eres un niño/a")
+elif edad < 18:
+    print("Eres un/a adolescente")
+elif edad < 65:
+    print("Eres un/a adulto/a")
+else:
+    print("Eres un/a adulto/a mayor")
+                            </div>
+                            <p><strong>Operadores lógicos:</strong></p>
+                            <ul>
+                                <li><strong>and:</strong> Ambas condiciones deben ser verdaderas</li>
+                                <li><strong>or:</strong> Al menos una condición debe ser verdadera</li>
+                                <li><strong>not:</strong> Invierte True/False</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🔮 Actividad 3: "El adivino digital"</div>
+                        <div class="time-indicator">⏱️ 20 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Proyecto:</strong> Crear un programa que hace preguntas y da respuestas personalizadas</p>
+                            <div class="code-block">
+# El adivino digital - Ejemplo base
+print("🔮 ¡Bienvenido al Adivino Digital! 🔮")
+
+nombre = input("¿Cuál es tu nombre? ")
+color = input("¿Cuál es tu color favorito? ")
+numero = int(input("Piensa un número del 1 al 10: "))
+
+# Predicciones basadas en las respuestas
+if color == "azul" and numero > 5:
+    prediction = "Tendrás un día lleno de aventuras"
+elif color == "rojo" or numero == 7:
+    prediction = "La suerte sonreirá hoy"
+else:
+    prediction = "Un día tranquilo y productivo te espera"
+
+print(f"\n✨ {nombre}, mi predicción para ti: {prediction} ✨")
+                            </div>
+                            <p><strong>Retos adicionales:</strong></p>
+                            <ul>
+                                <li>Añadir más preguntas y combinaciones</li>
+                                <li>Incluir predicciones sobre estudios, amigos, etc.</li>
+                                <li>Hacer que las respuestas sean más divertidas</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <h4>💡 Desafío individual</h4>
+                        <p><strong>Crear un programa que tome una decisión basada en 3 preguntas al usuario</strong></p>
+                        <p>Ideas: Recomendador de películas, selector de ropa según el clima, planificador de actividades de fin de semana</p>
+                        <p><strong>Testing cruzado:</strong> Intercambiar programas y probar el del compañero</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SESIÓN 6 DETALLADA -->
+        <div class="slide detail-slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sesión 6: Bucles y repeticiones</h1>
+                
+                <div class="detail-content">
+                    <div class="objective-list">
+                        <h4>Objetivos de la sesión:</h4>
+                        <ul>
+                            <li>Comprender las estructuras repetitivas</li>
+                            <li>Aplicar bucles for y while</li>
+                            <li>Crear programas con patrones</li>
+                        </ul>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🔄 Actividad 1: Introducción a bucles</div>
+                        <div class="time-indicator">⏱️ 10 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>¿Por qué repetir código?</strong></p>
+                            <p>Mostrar ejemplo "malo" vs "bueno":</p>
+                            <div class="code-block">
+# Forma ineficiente ❌
+print("¡Hola!")
+print("¡Hola!")
+print("¡Hola!")
+print("¡Hola!")
+print("¡Hola!")
+
+# Forma eficiente ✅
+for i in range(5):
+    print("¡Hola!")
+                            </div>
+                            <p><strong>Diferencia for vs while:</strong></p>
+                            <ul>
+                                <li><strong>for:</strong> Cuando sabemos cuántas veces repetir</li>
+                                <li><strong>while:</strong> Cuando repetimos hasta que se cumpla una condición</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">📊 Actividad 2: Bucle for con range()</div>
+                        <div class="time-indicator">⏱️ 15 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Variaciones de range():</strong></p>
+                            <div class="code-block">
+# range(stop) - desde 0 hasta stop-1
+for i in range(5):
+    print(i)  # 0, 1, 2, 3, 4
+
+# range(start, stop) - desde start hasta stop-1
+for i in range(2, 7):
+    print(i)  # 2, 3, 4, 5, 6
+
+# range(start, stop, step) - con saltos
+for i in range(0, 10, 2):
+    print(i)  # 0, 2, 4, 6, 8
+
+# range hacia atrás
+for i in range(10, 0, -1):
+    print(i)  # 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+                            </div>
+                            <p><strong>Ejercicio práctico:</strong> Crear la tabla de multiplicar del número favorito</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🎨 Actividad 3: "El generador de patrones"</div>
+                        <div class="time-indicator">⏱️ 20 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Proyecto creativo:</strong> Arte ASCII con bucles</p>
+                            <div class="code-block">
+# Patrón básico - Triángulo
+for i in range(5):
+    print("*" * (i + 1))
+
+# Patrón avanzado - Pirámide
+for i in range(5):
+    espacios = " " * (5 - i - 1)
+    estrellas = "*" * (2 * i + 1)
+    print(espacios + estrellas)
+
+# Countdown divertido
+for i in range(10, 0, -1):
+    print(f"Quedan {i} segundos...")
+print("🎉 ¡TIEMPO!")
+                            </div>
+                            <p><strong>Desafíos creativos:</strong></p>
+                            <ul>
+                                <li>Crear una escalera descendente</li>
+                                <li>Hacer un patrón de corazones o emojis</li>
+                                <li>Diseñar las iniciales de su nombre con asteriscos</li>
+                                <li>Crear un patrón que se repita y forme una animación simple</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <h4>💡 Desafío creativo: Galería de patrones</h4>
+                        <p><strong>Crear un patrón ASCII original</strong></p>
+                        <p>Puede ser geométrico, representar un objeto, escribir una palabra, etc.</p>
+                        <p><strong>Galería de arte:</strong> Los patrones más creativos se muestran a toda la clase</p>
+                        <p><strong>Votación popular:</strong> Elegir el patrón más ingenioso entre todos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SESIÓN 7 DETALLADA -->
+        <div class="slide detail-slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sesión 7: Listas y diccionarios</h1>
+                
+                <div class="detail-content">
+                    <div class="objective-list">
+                        <h4>Objetivos de la sesión:</h4>
+                        <ul>
+                            <li>Manejar estructuras de datos básicas</li>
+                            <li>Trabajar con listas y diccionarios</li>
+                            <li>Combinar bucles con estructuras de datos</li>
+                        </ul>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">📝 Actividad 1: Listas - Colecciones ordenadas</div>
+                        <div class="time-indicator">⏱️ 15 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Concepto:</strong> Las listas son como "cajas con compartimentos numerados"</p>
+                            <div class="code-block">
+# Crear listas
+aficiones = ["leer", "nadar", "programar"]
+numeros = [1, 5, 3, 9, 2]
+mixta = ["Ana", 16, True, 1.65]
+
+# Acceso por índice (empezamos en 0)
+print(aficiones[0])  # "leer"
+print(aficiones[2])  # "programar"
+
+# Modificar elementos
+aficiones[1] = "correr"
+print(aficiones)  # ["leer", "correr", "programar"]
+
+# Métodos útiles
+aficiones.append("dibujar")      # Añadir al final
+aficiones.insert(1, "cantar")   # Insertar en posición
+aficiones.remove("leer")        # Eliminar elemento
+print(len(aficiones))           # Longitud de la lista
+                            </div>
+                            <p><strong>Ejercicio:</strong> Crear una lista de 5 canciones favoritas y manipularla</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🗃️ Actividad 2: Diccionarios - Datos organizados</div>
+                        <div class="time-indicator">⏱️ 10 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Concepto:</strong> Diccionarios son como "archivadores con etiquetas"</p>
+                            <div class="code-block">
+# Crear diccionario
+estudiante = {
+    "nombre": "Carlos",
+    "edad": 17,
+    "curso": "1º Bach",
+    "materias": ["Matemáticas", "Física", "Informática"]
+}
+
+# Acceso por clave
+print(estudiante["nombre"])     # "Carlos"
+print(estudiante["materias"])   # Lista de materias
+
+# Modificar y añadir
+estudiante["edad"] = 18
+estudiante["ciudad"] = "Madrid"
+
+# Recorrer diccionario
+for clave, valor in estudiante.items():
+    print(f"{clave}: {valor}")
+                            </div>
+                            <p><strong>Ejercicio rápido:</strong> Crear un diccionario con datos de su película favorita</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">📱 Actividad 3: "La agenda digital"</div>
+                        <div class="time-indicator">⏱️ 20 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Proyecto integrador:</strong> Crear una agenda de contactos</p>
+                            <div class="code-block">
+# Agenda digital básica
+contactos = {
+    "Ana": {"telefono": "123456789", "edad": 16},
+    "Luis": {"telefono": "987654321", "edad": 17},
+    "María": {"telefono": "555666777", "edad": 16}
+}
+
+# Buscar contacto
+nombre = input("¿A quién buscas? ")
+
+if nombre in contactos:
+    info = contactos[nombre]
+    print(f"Teléfono de {nombre}: {info['telefono']}")
+    print(f"Edad: {info['edad']} años")
+else:
+    print("Contacto no encontrado")
+
+# Mostrar todos los contactos
+print("\nTodos los contactos:")
+for nombre, info in contactos.items():
+    print(f"{nombre}: {info['telefono']}")
+                            </div>
+                            <p><strong>Extensiones del proyecto:</strong></p>
+                            <ul>
+                                <li>Añadir nuevos contactos durante la ejecución</li>
+                                <li>Eliminar contactos existentes</li>
+                                <li>Buscar por número de teléfono</li>
+                                <li>Guardar contactos por grupos (familia, amigos, colegio)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <h4>💡 Proyecto personal</h4>
+                        <p><strong>Crear una lista personal con al menos 5 elementos:</strong></p>
+                        <ul>
+                            <li>Playlist musical con artista y canción</li>
+                            <li>Lista de libros leídos con puntuación</li>
+                            <li>Lugares que quiero visitar con país</li>
+                            <li>Videojuegos favoritos con plataforma</li>
+                        </ul>
+                        <p><strong>Demostrar:</strong> Cómo recorrer la lista, añadir elementos y buscar información</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SESIÓN 8 DETALLADA -->
+        <div class="slide detail-slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Sesión 8: Funciones y proyecto final</h1>
+                
+                <div class="detail-content">
+                    <div class="objective-list">
+                        <h4>Objetivos de la sesión:</h4>
+                        <ul>
+                            <li>Comprender el concepto de funciones</li>
+                            <li>Crear código reutilizable</li>
+                            <li>Desarrollar un proyecto integrador</li>
+                        </ul>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🔧 Actividad 1: Introducción a funciones</div>
+                        <div class="time-indicator">⏱️ 15 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>Concepto:</strong> Las funciones son como "máquinas que hacen una tarea específica"</p>
+                            <div class="code-block">
+# Función básica sin parámetros
+def saludar():
+    print("¡Hola a todos!")
+
+saludar()  # Llamar a la función
+
+# Función con parámetros
+def saludar_persona(nombre):
+    print(f"¡Hola, {nombre}!")
+
+saludar_persona("Ana")
+saludar_persona("Carlos")
+
+# Función que devuelve un valor
+def calcular_promedio(nota1, nota2, nota3):
+    promedio = (nota1 + nota2 + nota3) / 3
+    return promedio
+
+mi_promedio = calcular_promedio(8, 7, 9)
+print(f"Tu promedio es: {mi_promedio}")
+                            </div>
+                            <p><strong>Ventajas de las funciones:</strong></p>
+                            <ul>
+                                <li>Reutilizar código</li>
+                                <li>Organizar mejor el programa</li>
+                                <li>Facilitar el mantenimiento</li>
+                                <li>Probar partes del código por separado</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <div class="activity-title">🎯 Actividad 2: Proyecto final integrador</div>
+                        <div class="time-indicator">⏱️ 30 minutos</div>
+                        <div class="activity-content">
+                            <p><strong>"Mi primera aplicación" - Elegir uno de estos proyectos:</strong></p>
+                            
+                            <div class="exercise-box">
+                                <h4>📱 Opción 1: Calculadora avanzada</h4>
+                                <div class="code-block">
+def sumar(a, b):
+    return a + b
+
+def restar(a, b):
+    return a - b
+
+def multiplicar(a, b):
+    return a * b
+
+def dividir(a, b):
+    if b != 0:
+        return a / b
+    else:
+        return "Error: División por cero"
+
+# Menú principal
+print("=== CALCULADORA ===")
+print("1. Sumar")
+print("2. Restar")
+print("3. Multiplicar")
+print("4. Dividir")
+
+opcion = input("Elige una opción (1-4): ")
+num1 = float(input("Primer número: "))
+num2 = float(input("Segundo número: "))
+
+if opcion == "1":
+    resultado = sumar(num1, num2)
+elif opcion == "2":
+    resultado = restar(num1, num2)
+elif opcion == "3":
+    resultado = multiplicar(num1, num2)
+elif opcion == "4":
+    resultado = dividir(num1, num2)
+
+print(f"Resultado: {resultado}")
+                                </div>
+                            </div>
+
+                            <div class="exercise-box">
+                                <h4>🧠 Opción 2: Juego de preguntas</h4>
+                                <div class="code-block">
+def hacer_pregunta(pregunta, respuesta_correcta):
+    respuesta = input(pregunta + " ")
+    if respuesta.lower() == respuesta_correcta.lower():
+        print("¡Correcto! +1 punto")
+        return 1
+    else:
+        print(f"Incorrecto. La respuesta era: {respuesta_correcta}")
+        return 0
+
+# Juego principal
+print("=== QUIZ DE CONOCIMIENTOS ===")
+puntuacion = 0
+
+puntuacion += hacer_pregunta("¿Cuál es la capital de Francia?", "París")
+puntuacion += hacer_pregunta("¿En qué año llegó el hombre a la Luna?", "1969")
+puntuacion += hacer_pregunta("¿Cuál es el planeta más grande del sistema solar?", "Júpiter")
+
+print(f"\n¡Juego terminado! Tu puntuación: {puntuacion}/3")
+
+if puntuacion == 3:
+    print("¡Perfecto! Eres un genio")
+elif puntuacion >= 2:
+    print("¡Muy bien! Buen resultado")
+else:
+    print("Puedes mejorar, ¡sigue estudiando!")
+                                </div>
+                            </div>
+
+                            <div class="exercise-box">
+                                <h4>📝 Opción 3: Gestor de tareas</h4>
+                                <div class="code-block">
+tareas = []
+
+def mostrar_tareas():
+    if len(tareas) == 0:
+        print("No tienes tareas pendientes")
+    else:
+        print("=== TUS TAREAS ===")
+        for i, tarea in enumerate(tareas, 1):
+            print(f"{i}. {tarea}")
+
+def agregar_tarea():
+    tarea = input("¿Qué tarea quieres agregar? ")
+    tareas.append(tarea)
+    print(f"Tarea '{tarea}' agregada correctamente")
+
+def completar_tarea():
+    mostrar_tareas()
+    if len(tareas) > 0:
+        numero = int(input("¿Qué tarea completaste? (número): ")) - 1
+        if 0 <= numero < len(tareas):
+            tarea_completada = tareas.pop(numero)
+            print(f"¡Felicidades! Completaste: {tarea_completada}")
+
+# Menú principal
+while True:
+    print("\n=== GESTOR DE TAREAS ===")
+    print("1. Ver tareas")
+    print("2. Agregar tarea")
+    print("3. Completar tarea")
+    print("4. Salir")
+    
+    opcion = input("Elige una opción: ")
+    
+    if opcion == "1":
+        mostrar_tareas()
+    elif opcion == "2":
+        agregar_tarea()
+    elif opcion == "3":
+        completar_tarea()
+    elif opcion == "4":
+        print("¡Hasta luego!")
+        break
+                                </div>
+                            </div>
+
+                            <div class="exercise-box">
+                                <h4>🎵 Opción 4: Lista de reproducción musical</h4>
+                                <div class="code-block">
+playlist = []
+
+def mostrar_playlist():
+    if len(playlist) == 0:
+        print("Tu playlist está vacía")
+    else:
+        print("=== TU PLAYLIST ===")
+        for i, cancion in enumerate(playlist, 1):
+            print(f"{i}. {cancion['artista']} - {cancion['titulo']}")
+
+def agregar_cancion():
+    titulo = input("Título de la canción: ")
+    artista = input("Artista: ")
+    cancion = {"titulo": titulo, "artista": artista}
+    playlist.append(cancion)
+    print(f"Canción agregada: {artista} - {titulo}")
+
+def buscar_cancion():
+    busqueda = input("Buscar canción o artista: ").lower()
+    encontradas = []
+    
+    for cancion in playlist:
+        if busqueda in cancion['titulo'].lower() or busqueda in cancion['artista'].lower():
+            encontradas.append(cancion)
+    
+    if encontradas:
+        print("Canciones encontradas:")
+        for cancion in encontradas:
+            print(f"- {cancion['artista']} - {cancion['titulo']}")
+    else:
+        print("No se encontraron canciones")
+
+# Menú principal con las opciones de la playlist
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <h4>🏆 Presentación final</h4>
+                        <p><strong>Cada estudiante presenta su aplicación (2-3 minutos por persona):</strong></p>
+                        <ul>
+                            <li>Explicar qué hace su programa</li>
+                            <li>Demostrar su funcionamiento</li>
+                            <li>Contar qué fue lo más difícil y lo que más les gustó</li>
+                            <li>Mostrar alguna funcionalidad especial que hayan añadido</li>
+                        </ul>
+                        <p><strong>Reflexión final:</strong> "¿Qué has aprendido? ¿Qué te gustaría programar en el futuro?"</p>
+                        <p><strong>Certificado simbólico:</strong> "Programador Python Nivel 1" para todos los participantes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Anterior</button>
+        <button class="home-btn" id="homeBtn" onclick="goHome()" style="display: none;">🏠 Inicio</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Siguiente →</button>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const mainSlides = 8; // Primeras 8 diapositivas son las principales
+        
+        document.getElementById('totalSlides').textContent = mainSlides;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            
+            // Actualizar contador solo para diapositivas principales
+            if (index < mainSlides) {
+                document.getElementById('currentSlide').textContent = index + 1;
+                document.getElementById('totalSlides').textContent = mainSlides;
+                document.getElementById('homeBtn').style.display = 'none';
+            } else {
+                document.getElementById('currentSlide').textContent = 'Detalle';
+                document.getElementById('totalSlides').textContent = 'Sesión';
+                document.getElementById('homeBtn').style.display = 'inline-block';
+            }
+            
+            // Actualizar botones de navegación
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = (index < mainSlides && index === mainSlides - 1) || (index >= mainSlides && index === totalSlides - 1);
+        }
+
+        function changeSlide(direction) {
+            let newIndex = currentSlideIndex + direction;
+            
+            // Lógica para navegación entre diapositivas principales y de detalle
+            if (currentSlideIndex < mainSlides && direction === 1 && newIndex === mainSlides) {
+                return; // No pasar automáticamente a las diapositivas de detalle
+            }
+            
+            if (newIndex >= 0 && newIndex < totalSlides) {
+                currentSlideIndex = newIndex;
+                showSlide(currentSlideIndex);
+            }
+        }
+
+        function goToSession(sessionSlideIndex) {
+            currentSlideIndex = sessionSlideIndex;
+            showSlide(currentSlideIndex);
+        }
+
+        function goHome() {
+            currentSlideIndex = 0;
+            showSlide(currentSlideIndex);
+        }
+
+        // Navegación con teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (e.key === 'Home') {
+                goHome();
+            }
+        });
+
+        // Inicializar
+        showSlide(0);
+
+        // Interactividad para las tarjetas de sesión
+        document.querySelectorAll('.session-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-5px)';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
