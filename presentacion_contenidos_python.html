@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a la Programación en Python - Contenidos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .presentation {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 2rem;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.5s ease;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-title {
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(45deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .slide-content {
+            max-width: 1100px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .content-section:hover {
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            color: #f39c12;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #f39c12;
+            padding-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #f39c12;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .code-comment {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .code-keyword {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .code-string {
+            color: #2ecc71;
+        }
+
+        .code-number {
+            color: #3498db;
+        }
+
+        .concept-box {
+            background: rgba(52, 152, 219, 0.2);
+            border: 2px solid rgba(52, 152, 219, 0.5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .concept-title {
+            font-size: 1.2rem;
+            color: #3498db;
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+
+        .example-box {
+            background: rgba(46, 204, 113, 0.2);
+            border: 2px solid rgba(46, 204, 113, 0.5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .example-title {
+            font-size: 1.2rem;
+            color: #2ecc71;
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .operator-table {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .operator-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .operator-table th, .operator-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: left;
+        }
+
+        .operator-table th {
+            background: rgba(243, 156, 18, 0.3);
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .list-style {
+            line-height: 1.8;
+            margin-left: 1.5rem;
+        }
+
+        .list-style li {
+            margin-bottom: 0.5rem;
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .highlight-box {
+            background: rgba(231, 76, 60, 0.2);
+            border: 2px solid rgba(231, 76, 60, 0.5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .highlight-text {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        @keyframes pulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(243, 156, 18, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(231, 76, 60, 0.7), 0 0 40px rgba(243, 156, 18, 0.7); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide.active .content-section {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .slide.active .content-section:nth-child(1) { animation-delay: 0.1s; }
+        .slide.active .content-section:nth-child(2) { animation-delay: 0.2s; }
+        .slide.active .content-section:nth-child(3) { animation-delay: 0.3s; }
+
+        @media (max-width: 768px) {
+            .slide-title { font-size: 2rem; }
+            .two-column { grid-template-columns: 1fr; }
+            .slide { padding: 1rem; }
+            .operator-table { overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">12</span>
+        </div>
+
+        <!-- Slide 1: Introducción -->
+        <div class="slide active">
+            <div class="slide-content">
+                <h1 class="slide-title">¿Por qué aprender a programar?</h1>
+                <div class="intro-text">
+                    La programación se ha convertido en una habilidad fundamental en el mundo actual, no solo para carreras tecnológicas, sino para comprender mejor el entorno digital que nos rodea.
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">Beneficios del aprendizaje de programación</div>
+                    <ul class="list-style">
+                        <li><strong>Pensamiento lógico:</strong> Descomponer problemas complejos en partes manejables</li>
+                        <li><strong>Resolución sistemática:</strong> Abordar situaciones de manera estructurada</li>
+                        <li><strong>Comprensión digital:</strong> Entender cómo funciona la tecnología que nos rodea</li>
+                        <li><strong>Creatividad aplicada:</strong> Ser creadores, no solo consumidores de tecnología</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <div class="concept-title">¿Qué es Python?</div>
+                    <p>Python es un lenguaje de programación que destaca por su sencillez y adopción masiva. Su sintaxis clara lo convierte en una puerta de entrada ideal al mundo de la programación. Se utiliza en desarrollo web, ciencia de datos, inteligencia artificial y automatización.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <div class="highlight-text">
+                        "Programar nos enseña a pensar de manera diferente"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Instrucciones y Secuenciación -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Instrucciones y Secuenciación</h1>
+                
+                <div class="concept-box">
+                    <div class="concept-title">¿Qué es una instrucción?</div>
+                    <p>Una instrucción es cada una de las órdenes que damos al ordenador para que ejecute una operación. Es un conjunto de datos insertados en una secuencia específica que el procesador interpreta y ejecuta.</p>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Ejemplo básico de instrucción</div>
+                    <div class="code-block">
+<span class="code-keyword">print</span>(<span class="code-string">"¡Hola Mundo!"</span>)
+                    </div>
+                    <p>Esta simple línea le dice al ordenador: "muestra el texto '¡Hola Mundo!' en la pantalla"</p>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Secuenciación</div>
+                    <p>La secuenciación es la organización correcta de las acciones. Las instrucciones se ejecutan una tras otra, en orden secuencial. El orden importa.</p>
+                    
+                    <div class="example-box">
+                        <div class="example-title">Analogía: Hacer un bocadillo</div>
+                        <ol style="margin-left: 1.5rem; line-height: 1.6;">
+                            <li>Coger dos rebanadas de pan</li>
+                            <li>Untar mantequilla en una rebanada</li>
+                            <li>Poner jamón sobre la mantequilla</li>
+                            <li>Cubrir con la segunda rebanada</li>
+                        </ol>
+                        <p><strong>¿Qué pasaría si cambiamos el orden?</strong></p>
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="code-comment"># Secuencia de instrucciones</span>
+<span class="code-keyword">print</span>(<span class="code-string">"Hola, ¿cómo estás?"</span>)
+nombre = <span class="code-keyword">input</span>(<span class="code-string">"¿Cómo te llamas? "</span>)
+<span class="code-keyword">print</span>(<span class="code-string">"Hola"</span>, nombre, <span class="code-string">"encantado de saludarte"</span>)
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Algoritmos -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Algoritmos y Diagramas de Flujo</h1>
+                
+                <div class="concept-box">
+                    <div class="concept-title">¿Qué es un algoritmo?</div>
+                    <p>Un algoritmo es un conjunto de instrucciones o reglas definidas, ordenadas y finitas que permite solucionar un problema, realizar un cómputo o llevar a cabo otras tareas.</p>
+                </div>
+
+                <div class="two-column">
+                    <div class="content-section">
+                        <div class="section-title">Algoritmo: Freír un huevo</div>
+                        <ol class="list-style">
+                            <li>Colocar una sartén sobre la vitrocerámica</li>
+                            <li>Encender la vitro a media potencia</li>
+                            <li>Verter aceite en la sartén</li>
+                            <li>Romper un huevo y verterlo en la sartén</li>
+                            <li>Añadir una pizca de sal sobre la yema</li>
+                            <li>Esperar 2 minutos</li>
+                            <li>Apagar el fuego</li>
+                        </ol>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">Algoritmo: Área de triángulo</div>
+                        <ol class="list-style">
+                            <li>Medir la base</li>
+                            <li>Medir la altura</li>
+                            <li>Multiplicar base por altura</li>
+                            <li>Dividir el resultado por 2</li>
+                        </ol>
+                        
+                        <div class="code-block">
+base = <span class="code-number">7</span>
+altura = <span class="code-number">10</span>
+area = (base * altura) / <span class="code-number">2</span>
+<span class="code-keyword">print</span>(<span class="code-string">"El área es:"</span>, area)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <div class="concept-title">Diagramas de flujo</div>
+                    <p>Los diagramas de flujo son representaciones gráficas que ilustran el recorrido de las acciones. Son como mapas que nos guían a través de diferentes caminos según las decisiones que tomemos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Tipos de datos -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Tipos de Datos en Python</h1>
+                
+                <div class="intro-text">
+                    Cuando programamos, trabajamos con diferentes tipos de información. Python clasifica estos datos en categorías específicas.
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Los cuatro tipos principales</div>
+                    
+                    <div class="operator-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Descripción</th>
+                                    <th>Ejemplo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>int</strong> (Enteros)</td>
+                                    <td>Números sin decimales</td>
+                                    <td>5, -3, 1000</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>float</strong> (Flotantes)</td>
+                                    <td>Números con decimales</td>
+                                    <td>3.14, -2.5, 0.0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>str</strong> (Cadenas)</td>
+                                    <td>Texto entre comillas</td>
+                                    <td>"Hola", 'Python'</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>bool</strong> (Booleanos)</td>
+                                    <td>Verdadero o Falso</td>
+                                    <td>True, False</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Ejemplos prácticos</div>
+                    <div class="code-block">
+<span class="code-comment"># Diferentes tipos de datos</span>
+edad = <span class="code-number">16</span>                    <span class="code-comment"># int</span>
+altura = <span class="code-number">1.75</span>                <span class="code-comment"># float</span>
+nombre = <span class="code-string">"Ana"</span>               <span class="code-comment"># str</span>
+es_estudiante = <span class="code-keyword">True</span>        <span class="code-comment"># bool</span>
+
+<span class="code-comment"># Verificar el tipo</span>
+<span class="code-keyword">print</span>(<span class="code-keyword">type</span>(edad))         <span class="code-comment"># <class 'int'></span>
+<span class="code-keyword">print</span>(<span class="code-keyword">type</span>(altura))       <span class="code-comment"># <class 'float'></span>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">¿Por qué son importantes los tipos?</div>
+                    <p>Los tipos determinan qué operaciones podemos realizar. No puedes sumar un número con una palabra, pero sí puedes concatenar dos palabras.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Variables y Constantes -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Variables y Constantes</h1>
+                
+                <div class="concept-box">
+                    <div class="concept-title">¿Qué son las variables?</div>
+                    <p>Las variables son espacios en la memoria del ordenador que utilizamos para almacenar datos. Son como "cajones con etiquetas" donde guardamos información que podemos usar más tarde.</p>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Creación y uso de variables</div>
+                    <div class="code-block">
+<span class="code-comment"># Crear variables</span>
+edad = <span class="code-number">25</span>
+nombre = <span class="code-string">"Juan"</span>
+altura = <span class="code-number">1.75</span>
+es_estudiante = <span class="code-keyword">True</span>
+
+<span class="code-comment"># Usar las variables</span>
+<span class="code-keyword">print</span>(<span class="code-string">"Me llamo"</span>, nombre)
+<span class="code-keyword">print</span>(<span class="code-string">"Tengo"</span>, edad, <span class="code-string">"años"</span>)
+
+<span class="code-comment"># Modificar variables</span>
+edad = edad + <span class="code-number">1</span>
+<span class="code-keyword">print</span>(<span class="code-string">"Ahora tengo"</span>, edad, <span class="code-string">"años"</span>)
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="content-section">
+                        <div class="section-title">Variables</div>
+                        <ul class="list-style">
+                            <li>Pueden cambiar de valor</li>
+                            <li>Se escriben en minúsculas</li>
+                            <li>Nombres descriptivos</li>
+                            <li>Ejemplo: <code>edad</code>, <code>nombre</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">Constantes</div>
+                        <ul class="list-style">
+                            <li>No cambian de valor</li>
+                            <li>Se escriben en MAYÚSCULAS</li>
+                            <li>Valores fijos del programa</li>
+                            <li>Ejemplo: <code>PI</code>, <code>GRAVEDAD</code></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="code-comment"># Ejemplos de constantes</span>
+PI = <span class="code-number">3.14159</span>
+GRAVEDAD = <span class="code-number">9.81</span>
+VELOCIDAD_LUZ = <span class="code-number">299792458</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Operadores Aritméticos -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Operadores y Expresiones</h1>
+                
+                <div class="content-section">
+                    <div class="section-title">Operadores Aritméticos</div>
+                    <div class="operator-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Operador</th>
+                                    <th>Operación</th>
+                                    <th>Ejemplo</th>
+                                    <th>Resultado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>+</td><td>Suma</td><td>5 + 3</td><td>8</td></tr>
+                                <tr><td>-</td><td>Resta</td><td>5 - 3</td><td>2</td></tr>
+                                <tr><td>*</td><td>Multiplicación</td><td>5 * 3</td><td>15</td></tr>
+                                <tr><td>/</td><td>División</td><td>10 / 3</td><td>3.333...</td></tr>
+                                <tr><td>//</td><td>División entera</td><td>10 // 3</td><td>3</td></tr>
+                                <tr><td>%</td><td>Módulo (resto)</td><td>10 % 3</td><td>1</td></tr>
+                                <tr><td>**</td><td>Potencia</td><td>2 ** 3</td><td>8</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Ejemplos prácticos</div>
+                    <div class="code-block">
+a = <span class="code-number">10</span>
+b = <span class="code-number">3</span>
+
+<span class="code-keyword">print</span>(<span class="code-string">"Suma:"</span>, a + b)           <span class="code-comment"># 13</span>
+<span class="code-keyword">print</span>(<span class="code-string">"División:"</span>, a / b)       <span class="code-comment"># 3.333...</span>
+<span class="code-keyword">print</span>(<span class="code-string">"Módulo:"</span>, a % b)         <span class="code-comment"># 1</span>
+<span class="code-keyword">print</span>(<span class="code-string">"Potencia:"</span>, a ** b)      <span class="code-comment"># 1000</span>
+
+<span class="code-comment"># Operaciones con cadenas</span>
+saludo = <span class="code-string">"Hola "</span> + <span class="code-string">"mundo"</span>      <span class="code-comment"># "Hola mundo"</span>
+repetir = <span class="code-string">"Python"</span> * <span class="code-number">3</span>        <span class="code-comment"># "PythonPythonPython"</span>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <div class="concept-title">Precedencia de operadores</div>
+                    <p>Python sigue las mismas reglas que las matemáticas: paréntesis primero, luego potencias, después multiplicación/división, y finalmente suma/resta.</p>
+                    <div class="code-block">
+resultado = <span class="code-number">2</span> + <span class="code-number">3</span> * <span class="code-number">4</span>        <span class="code-comment"># 14 (no 20)</span>
+resultado = (<span class="code-number">2</span> + <span class="code-number">3</span>) * <span class="code-number">4</span>      <span class="code-comment"># 20</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Operadores de Comparación -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Operadores de Comparación y Lógicos</h1>
+                
+                <div class="content-section">
+                    <div class="section-title">Operadores de Comparación</div>
+                    <p>Estos operadores comparan dos valores y devuelven True o False</p>
+                    <div class="operator-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Operador</th>
+                                    <th>Significado</th>
+                                    <th>Ejemplo</th>
+                                    <th>Resultado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>==</td><td>Igual a</td><td>5 == 5</td><td>True</td></tr>
+                                <tr><td>!=</td><td>Distinto de</td><td>5 != 3</td><td>True</td></tr>
+                                <tr><td>></td><td>Mayor que</td><td>5 > 3</td><td>True</td></tr>
+                                <tr><td><</td><td>Menor que</td><td>3 < 5</td><td>True</td></tr>
+                                <tr><td>>=</td><td>Mayor o igual</td><td>5 >= 5</td><td>True</td></tr>
+                                <tr><td><=</td><td>Menor o igual</td><td>3 <= 5</td><td>True</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Operadores Lógicos</div>
+                    <div class="code-block">
+<span class="code-comment"># Operador AND - ambas condiciones deben ser verdaderas</span>
+edad = <span class="code-number">17</span>
+tiene_permiso = <span class="code-keyword">True</span>
+puede_conducir = edad >= <span class="code-number">18</span> <span class="code-keyword">and</span> tiene_permiso  <span class="code-comment"># False</span>
+
+<span class="code-comment"># Operador OR - al menos una condición debe ser verdadera</span>
+es_fin_de_semana = <span class="code-keyword">True</span>
+es_vacaciones = <span class="code-keyword">False</span>
+puede_descansar = es_fin_de_semana <span class="code-keyword">or</span> es_vacaciones  <span class="code-comment"># True</span>
+
+<span class="code-comment"># Operador NOT - invierte el valor</span>
+llueve = <span class="code-keyword">False</span>
+no_llueve = <span class="code-keyword">not</span> llueve  <span class="code-comment"># True</span>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Ejemplo práctico: Decisiones</div>
+                    <div class="code-block">
+temperatura = <span class="code-number">25</span>
+es_soleado = <span class="code-keyword">True</span>
+
+<span class="code-comment"># ¿Vamos a la playa?</span>
+vamos_a_la_playa = temperatura > <span class="code-number">20</span> <span class="code-keyword">and</span> es_soleado
+<span class="code-keyword">print</span>(<span class="code-string">"¿Vamos a la playa?"</span>, vamos_a_la_playa)  <span class="code-comment"># True</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Interacción con el usuario -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Interacción con el Usuario</h1>
+                
+                <div class="content-section">
+                    <div class="section-title">Mostrar datos: función print()</div>
+                    <p>La función <code>print()</code> nos permite mostrar información en pantalla</p>
+                    <div class="code-block">
+<span class="code-comment"># Mostrar texto simple</span>
+<span class="code-keyword">print</span>(<span class="code-string">"¡Hola, mundo!"</span>)
+
+<span class="code-comment"># Mostrar múltiples valores</span>
+nombre = <span class="code-string">"Ana"</span>
+edad = <span class="code-number">16</span>
+<span class="code-keyword">print</span>(<span class="code-string">"Nombre:"</span>, nombre, <span class="code-string">"Edad:"</span>, edad)
+
+<span class="code-comment"># Usando F-strings (formato moderno)</span>
+<span class="code-keyword">print</span>(<span class="code-string">f"Me llamo {nombre} y tengo {edad} años"</span>)
+
+<span class="code-comment"># Personalizar separador y final</span>
+<span class="code-keyword">print</span>(<span class="code-string">"Python"</span>, <span class="code-string">"es"</span>, <span class="code-string">"genial"</span>, sep=<span class="code-string">"-"</span>, end=<span class="code-string">"!\n"</span>)
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Obtener datos: función input()</div>
+                    <p>La función <code>input()</code> permite que el usuario introduzca información</p>
+                    <div class="code-block">
+<span class="code-comment"># Leer texto</span>
+nombre = <span class="code-keyword">input</span>(<span class="code-string">"¿Cómo te llamas? "</span>)
+<span class="code-keyword">print</span>(<span class="code-string">"Hola"</span>, nombre)
+
+<span class="code-comment"># Leer números (conversión necesaria)</span>
+edad = <span class="code-keyword">int</span>(<span class="code-keyword">input</span>(<span class="code-string">"¿Cuántos años tienes? "</span>))
+altura = <span class="code-keyword">float</span>(<span class="code-keyword">input</span>(<span class="code-string">"¿Cuánto mides? "</span>))
+
+<span class="code-keyword">print</span>(<span class="code-string">f"Tienes {edad} años y mides {altura} metros"</span>)
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <div class="highlight-text">
+                        ¡IMPORTANTE! input() siempre devuelve texto (str)
+                    </div>
+                    <p>Si necesitas un número, debes convertirlo con int() o float()</p>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Programa interactivo completo</div>
+                    <div class="code-block">
+<span class="code-keyword">print</span>(<span class="code-string">"=== CALCULADORA DE IMC ==="</span>)
+peso = <span class="code-keyword">float</span>(<span class="code-keyword">input</span>(<span class="code-string">"Introduce tu peso (kg): "</span>))
+altura = <span class="code-keyword">float</span>(<span class="code-keyword">input</span>(<span class="code-string">"Introduce tu altura (m): "</span>))
+
+imc = peso / (altura ** <span class="code-number">2</span>)
+<span class="code-keyword">print</span>(<span class="code-string">f"Tu IMC es: {imc:.2f}"</span>)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Estructuras Condicionales -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Estructuras Condicionales</h1>
+                
+                <div class="concept-box">
+                    <div class="concept-title">¿Qué son las estructuras condicionales?</div>
+                    <p>Las estructuras condicionales permiten que nuestro programa tome decisiones. Según se cumplan o no ciertas condiciones, se ejecutarán diferentes bloques de código.</p>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Estructura if-elif-else</div>
+                    <div class="code-block">
+edad = <span class="code-keyword">int</span>(<span class="code-keyword">input</span>(<span class="code-string">"¿Cuántos años tienes? "</span>))
+
+<span class="code-keyword">if</span> edad < <span class="code-number">13</span>:
+    <span class="code-keyword">print</span>(<span class="code-string">"Eres un niño/a"</span>)
+<span class="code-keyword">elif</span> edad < <span class="code-number">18</span>:
+    <span class="code-keyword">print</span>(<span class="code-string">"Eres un/a adolescente"</span>)
+<span class="code-keyword">elif</span> edad < <span class="code-number">65</span>:
+    <span class="code-keyword">print</span>(<span class="code-string">"Eres un/a adulto/a"</span>)
+<span class="code-keyword">else</span>:
+    <span class="code-keyword">print</span>(<span class="code-string">"Eres un/a adulto/a mayor"</span>)
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="content-section">
+                        <div class="section-title">Palabras clave</div>
+                        <ul class="list-style">
+                            <li><strong>if:</strong> "si" se cumple la condición</li>
+                            <li><strong>elif:</strong> "sino, si" se cumple otra condición</li>
+                            <li><strong>else:</strong> "sino" (cuando no se cumple ninguna)</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">Reglas importantes</div>
+                        <ul class="list-style">
+                            <li>Usar <strong>:</strong> después de la condición</li>
+                            <li><strong>Indentar</strong> el código interno</li>
+                            <li>Solo se ejecuta un bloque</li>
+                            <li>else es opcional</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Ejemplo: Sistema de notas</div>
+                    <div class="code-block">
+nota = <span class="code-keyword">float</span>(<span class="code-keyword">input</span>(<span class="code-string">"Introduce tu nota: "</span>))
+
+<span class="code-keyword">if</span> nota >= <span class="code-number">9</span>:
+    <span class="code-keyword">print</span>(<span class="code-string">"Sobresaliente"</span>)
+<span class="code-keyword">elif</span> nota >= <span class="code-number">7</span>:
+    <span class="code-keyword">print</span>(<span class="code-string">"Notable"</span>)
+<span class="code-keyword">elif</span> nota >= <span class="code-number">5</span>:
+    <span class="code-keyword">print</span>(<span class="code-string">"Aprobado"</span>)
+<span class="code-keyword">else</span>:
+    <span class="code-keyword">print</span>(<span class="code-string">"Suspenso"</span>)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Bucles -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Estructuras Repetitivas (Bucles)</h1>
+                
+                <div class="concept-box">
+                    <div class="concept-title">¿Por qué usar bucles?</div>
+                    <p>Los bucles nos permiten repetir código sin escribirlo múltiples veces. Son fundamentales para automatizar tareas repetitivas.</p>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Bucle FOR - Repeticiones conocidas</div>
+                    <p>Usamos <code>for</code> cuando sabemos cuántas veces queremos repetir algo</p>
+                    <div class="code-block">
+<span class="code-comment"># Contar del 0 al 4</span>
+<span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-keyword">range</span>(<span class="code-number">5</span>):
+    <span class="code-keyword">print</span>(i)  <span class="code-comment"># 0, 1, 2, 3, 4</span>
+
+<span class="code-comment"># Contar desde 2 hasta 6</span>
+<span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-keyword">range</span>(<span class="code-number">2</span>, <span class="code-number">7</span>):
+    <span class="code-keyword">print</span>(i)  <span class="code-comment"># 2, 3, 4, 5, 6</span>
+
+<span class="code-comment"># Contar de 2 en 2</span>
+<span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-keyword">range</span>(<span class="code-number">0</span>, <span class="code-number">11</span>, <span class="code-number">2</span>):
+    <span class="code-keyword">print</span>(i)  <span class="code-comment"># 0, 2, 4, 6, 8, 10</span>
+
+<span class="code-comment"># Cuenta atrás</span>
+<span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-keyword">range</span>(<span class="code-number">5</span>, <span class="code-number">0</span>, -<span class="code-number">1</span>):
+    <span class="code-keyword">print</span>(<span class="code-string">f"{i}..."</span>)
+<span class="code-keyword">print</span>(<span class="code-string">"¡Despegue!"</span>)
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Bucle WHILE - Repetir hasta que...</div>
+                    <p>Usamos <code>while</code> cuando repetimos hasta que se cumpla una condición</p>
+                    <div class="code-block">
+contador = <span class="code-number">0</span>
+<span class="code-keyword">while</span> contador < <span class="code-number">5</span>:
+    <span class="code-keyword">print</span>(<span class="code-string">f"Vuelta número {contador}"</span>)
+    contador = contador + <span class="code-number">1</span>
+
+<span class="code-comment"># Juego de adivinanza</span>
+numero_secreto = <span class="code-number">7</span>
+adivinado = <span class="code-keyword">False</span>
+
+<span class="code-keyword">while</span> <span class="code-keyword">not</span> adivinado:
+    intento = <span class="code-keyword">int</span>(<span class="code-keyword">input</span>(<span class="code-string">"Adivina el número (1-10): "</span>))
+    <span class="code-keyword">if</span> intento == numero_secreto:
+        <span class="code-keyword">print</span>(<span class="code-string">"¡Correcto!"</span>)
+        adivinado = <span class="code-keyword">True</span>
+    <span class="code-keyword">else</span>:
+        <span class="code-keyword">print</span>(<span class="code-string">"Inténtalo de nuevo"</span>)
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Ejemplo: Tabla de multiplicar</div>
+                    <div class="code-block">
+numero = <span class="code-keyword">int</span>(<span class="code-keyword">input</span>(<span class="code-string">"¿Qué tabla quieres ver? "</span>))
+
+<span class="code-keyword">print</span>(<span class="code-string">f"Tabla del {numero}:"</span>)
+<span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-keyword">range</span>(<span class="code-number">1</span>, <span class="code-number">11</span>):
+    resultado = numero * i
+    <span class="code-keyword">print</span>(<span class="code-string">f"{numero} x {i} = {resultado}"</span>)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Listas -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Listas - Colecciones de datos</h1>
+                
+                <div class="concept-box">
+                    <div class="concept-title">¿Qué son las listas?</div>
+                    <p>Las listas son colecciones ordenadas y modificables de elementos. Son como "cajas con compartimentos numerados" donde cada elemento tiene una posición específica (índice).</p>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Crear y manipular listas</div>
+                    <div class="code-block">
+<span class="code-comment"># Crear listas</span>
+frutas = [<span class="code-string">"manzana"</span>, <span class="code-string">"plátano"</span>, <span class="code-string">"cereza"</span>]
+numeros = [<span class="code-number">1</span>, <span class="code-number">5</span>, <span class="code-number">3</span>, <span class="code-number">9</span>, <span class="code-number">2</span>]
+mixta = [<span class="code-string">"Ana"</span>, <span class="code-number">16</span>, <span class="code-keyword">True</span>, <span class="code-number">1.65</span>]
+
+<span class="code-comment"># Acceder a elementos (empezamos en 0)</span>
+<span class="code-keyword">print</span>(frutas[<span class="code-number">0</span>])    <span class="code-comment"># "manzana"</span>
+<span class="code-keyword">print</span>(frutas[<span class="code-number">2</span>])    <span class="code-comment"># "cereza"</span>
+<span class="code-keyword">print</span>(frutas[-<span class="code-number">1</span>])   <span class="code-comment"># "cereza" (último elemento)</span>
+
+<span class="code-comment"># Modificar elementos</span>
+frutas[<span class="code-number">1</span>] = <span class="code-string">"kiwi"</span>
+<span class="code-keyword">print</span>(frutas)      <span class="code-comment"># ["manzana", "kiwi", "cereza"]</span>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Métodos útiles de listas</div>
+                    <div class="code-block">
+aficiones = [<span class="code-string">"leer"</span>, <span class="code-string">"nadar"</span>]
+
+<span class="code-comment"># Añadir elementos</span>
+aficiones.append(<span class="code-string">"programar"</span>)           <span class="code-comment"># Al final</span>
+aficiones.insert(<span class="code-number">1</span>, <span class="code-string">"correr"</span>)          <span class="code-comment"># En posición específica</span>
+
+<span class="code-comment"># Eliminar elementos</span>
+aficiones.remove(<span class="code-string">"nadar"</span>)              <span class="code-comment"># Por valor</span>
+ultima = aficiones.pop()                <span class="code-comment"># Elimina y devuelve el último</span>
+
+<span class="code-comment"># Información de la lista</span>
+<span class="code-keyword">print</span>(<span class="code-keyword">len</span>(aficiones))              <span class="code-comment"># Longitud</span>
+<span class="code-keyword">print</span>(<span class="code-string">"leer"</span> <span class="code-keyword">in</span> aficiones)        <span class="code-comment"># ¿Está el elemento?</span>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Recorrer listas</div>
+                    <div class="code-block">
+colores = [<span class="code-string">"rojo"</span>, <span class="code-string">"verde"</span>, <span class="code-string">"azul"</span>]
+
+<span class="code-comment"># Método 1: Recorrer elementos directamente</span>
+<span class="code-keyword">for</span> color <span class="code-keyword">in</span> colores:
+    <span class="code-keyword">print</span>(<span class="code-string">f"Me gusta el {color}"</span>)
+
+<span class="code-comment"># Método 2: Recorrer con índices</span>
+<span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-keyword">range</span>(<span class="code-keyword">len</span>(colores)):
+    <span class="code-keyword">print</span>(<span class="code-string">f"{i}: {colores[i]}"</span>)
+
+<span class="code-comment"># Método 3: Con enumerate (índice y valor)</span>
+<span class="code-keyword">for</span> i, color <span class="code-keyword">in</span> <span class="code-keyword">enumerate</span>(colores):
+    <span class="code-keyword">print</span>(<span class="code-string">f"Posición {i}: {color}"</span>)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Funciones -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Funciones - Código Reutilizable</h1>
+                
+                <div class="concept-box">
+                    <div class="concept-title">¿Qué son las funciones?</div>
+                    <p>Las funciones son bloques de código que realizan una tarea específica y se pueden invocar desde otras partes del programa. Son como "máquinas" que reciben datos, los procesan y pueden devolver un resultado.</p>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Estructura de una función</div>
+                    <div class="code-block">
+<span class="code-comment"># Función sin parámetros</span>
+<span class="code-keyword">def</span> saludar():
+    <span class="code-keyword">print</span>(<span class="code-string">"¡Hola a todos!"</span>)
+
+saludar()  <span class="code-comment"># Llamar a la función</span>
+
+<span class="code-comment"># Función con parámetros</span>
+<span class="code-keyword">def</span> saludar_persona(nombre):
+    <span class="code-keyword">print</span>(<span class="code-string">f"¡Hola, {nombre}!"</span>)
+
+saludar_persona(<span class="code-string">"Ana"</span>)
+saludar_persona(<span class="code-string">"Carlos"</span>)
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">Funciones que devuelven valores</div>
+                    <div class="code-block">
+<span class="code-keyword">def</span> calcular_area_rectangulo(base, altura):
+    area = base * altura
+    <span class="code-keyword">return</span> area
+
+<span class="code-comment"># Usar la función</span>
+mi_area = calcular_area_rectangulo(<span class="code-number">5</span>, <span class="code-number">3</span>)
+<span class="code-keyword">print</span>(<span class="code-string">f"El área es: {mi_area}"</span>)
+
+<span class="code-comment"># Función para calcular promedio</span>
+<span class="code-keyword">def</span> calcular_promedio(nota1, nota2, nota3):
+    promedio = (nota1 + nota2 + nota3) / <span class="code-number">3</span>
+    <span class="code-keyword">return</span> promedio
+
+mi_promedio = calcular_promedio(<span class="code-number">8</span>, <span class="code-number">7</span>, <span class="code-number">9</span>)
+<span class="code-keyword">print</span>(<span class="code-string">f"Tu promedio es: {mi_promedio}"</span>)
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="content-section">
+                        <div class="section-title">Ventajas de las funciones</div>
+                        <ul class="list-style">
+                            <li>Reutilizar código</li>
+                            <li>Organizar mejor el programa</li>
+                            <li>Facilitar el mantenimiento</li>
+                            <li>Probar partes por separado</li>
+                            <li>Trabajar en equipo</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">Alcance de variables</div>
+                        <ul class="list-style">
+                            <li><strong>Local:</strong> Dentro de la función</li>
+                            <li><strong>Global:</strong> Fuera de funciones</li>
+                            <li>Variables locales no se ven fuera</li>
+                            <li>Evitar variables globales</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Ejemplo completo: Calculadora</div>
+                    <div class="code-block">
+<span class="code-keyword">def</span> sumar(a, b):
+    <span class="code-keyword">return</span> a + b
+
+<span class="code-keyword">def</span> restar(a, b):
+    <span class="code-keyword">return</span> a - b
+
+<span class="code-keyword">def</span> multiplicar(a, b):
+    <span class="code-keyword">return</span> a * b
+
+<span class="code-keyword">def</span> dividir(a, b):
+    <span class="code-keyword">if</span> b != <span class="code-number">0</span>:
+        <span class="code-keyword">return</span> a / b
+    <span class="code-keyword">else</span>:
+        <span class="code-keyword">return</span> <span class="code-string">"Error: División por cero"</span>
+
+<span class="code-comment"># Usar las funciones</span>
+resultado = sumar(<span class="code-number">10</span>, <span class="code-number">5</span>)
+<span class="code-keyword">print</span>(<span class="code-string">f"10 + 5 = {resultado}"</span>)
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <div class="highlight-text">
+                        ¡Ya sabes programar en Python!
+                    </div>
+                    <p>Con estos conceptos puedes crear programas completos: desde calculadoras hasta juegos sencillos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Anterior</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Siguiente →</button>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            
+            document.getElementById('currentSlide').textContent = index + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            const newIndex = currentSlideIndex + direction;
+            if (newIndex >= 0 && newIndex < totalSlides) {
+                currentSlideIndex = newIndex;
+                showSlide(currentSlideIndex);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
