@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creación Digital y Pensamiento Computacional - Primera Clase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: none;
+            animation: slideIn 0.5s ease-out;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        h1 {
+            color: #764ba2;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.8em;
+            margin: 30px 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        p, li {
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 15px;
+            list-style: none;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-size: 0.8em;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .card h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .card p {
+            color: white;
+            opacity: 0.95;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .grid-item {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .grid-item h4 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        button {
+            background: white;
+            color: #764ba2;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            background: #764ba2;
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            vertical-align: middle;
+        }
+
+        .activity-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .activity-box h3 {
+            color: #856404;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .tech-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px;
+            }
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.5em; }
+            p, li { font-size: 1.1em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Diapositiva 1: Portada -->
+        <div class="slide active">
+            <div class="slide-number">1 / 12</div>
+            <h1>💻 Creación Digital y Pensamiento Computacional</h1>
+            <h2>1º Bachillerato - Andalucía</h2>
+            <div style="text-align: center; margin-top: 60px;">
+                <p style="font-size: 1.8em; color: #667eea; font-weight: bold;">Primera Sesión</p>
+                <p style="font-size: 1.4em; margin-top: 30px;">Introducción a la asignatura</p>
+                <div style="margin-top: 60px;">
+                    <span class="emoji">🚀</span>
+                    <span class="emoji">🎨</span>
+                    <span class="emoji">🤖</span>
+                    <span class="emoji">💡</span>
+                    <span class="emoji">🎯</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 2: ¿Qué vamos a aprender? -->
+        <div class="slide">
+            <div class="slide-number">2 / 12</div>
+            <h2>¿Qué vamos a aprender este curso?</h2>
+            <div class="card">
+                <h3>🎯 Objetivo Principal</h3>
+                <p>No solo usar tecnología, sino comprenderla, diseñarla y crearla</p>
+            </div>
+            <h3>Competencias del Siglo XXI</h3>
+            <ul>
+                <li>Programación de aplicaciones web y móviles</li>
+                <li>Diseño de contenido multimedia profesional</li>
+                <li>Resolución de problemas mediante algoritmos</li>
+                <li>Pensamiento estructurado y creativo</li>
+                <li>Trabajo colaborativo en proyectos digitales</li>
+            </ul>
+        </div>
+
+        <!-- Diapositiva 3: Pensamiento Computacional -->
+        <div class="slide">
+            <div class="slide-number">3 / 12</div>
+            <h2>El Pensamiento Computacional</h2>
+            <p style="text-align: center; font-size: 1.4em; margin-bottom: 40px;">
+                <span class="highlight">Tu nueva forma de resolver problemas</span>
+            </p>
+            <div class="grid">
+                <div class="grid-item">
+                    <h4>🔨 Descomposición</h4>
+                    <p>Dividir problemas grandes en partes manejables</p>
+                </div>
+                <div class="grid-item">
+                    <h4>🔍 Patrones</h4>
+                    <p>Identificar similitudes y regularidades</p>
+                </div>
+                <div class="grid-item">
+                    <h4>🎯 Abstracción</h4>
+                    <p>Centrarse en lo importante, ignorar lo irrelevante</p>
+                </div>
+                <div class="grid-item">
+                    <h4>📋 Algoritmos</h4>
+                    <p>Crear instrucciones paso a paso</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 4: Ejemplo Práctico PC -->
+        <div class="slide">
+            <div class="slide-number">4 / 12</div>
+            <h2>Ejemplo: Crear un Videojuego 🎮</h2>
+            <div style="margin-top: 40px;">
+                <h3>Aplicando el Pensamiento Computacional:</h3>
+                <div class="card">
+                    <h3>1. Descomposición</h3>
+                    <p>• Diseño de personajes • Creación de escenarios • Mecánicas de juego • Sistema de puntuación</p>
+                </div>
+                <div class="card">
+                    <h3>2. Reconocimiento de Patrones</h3>
+                    <p>• Movimientos similares entre personajes • Física consistente • Interfaz reutilizable</p>
+                </div>
+                <div class="card">
+                    <h3>3. Abstracción</h3>
+                    <p>• Funciones principales primero • Detalles estéticos después</p>
+                </div>
+                <div class="card">
+                    <h3>4. Algoritmos</h3>
+                    <p>• Lógica del juego • Sistema de colisiones • Progresión de niveles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 5: Áreas de Creación Digital -->
+        <div class="slide">
+            <div class="slide-number">5 / 12</div>
+            <h2>Áreas de Creación Digital</h2>
+            <h3>🌐 Programación Web</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">HTML</span>
+                <span class="tech-badge">CSS</span>
+                <span class="tech-badge">JavaScript</span>
+            </div>
+            <p>Crear páginas y aplicaciones web interactivas</p>
+
+            <h3>🎨 Diseño Gráfico y Multimedia</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">Canva</span>
+                <span class="tech-badge">GIMP</span>
+                <span class="tech-badge">DaVinci Resolve</span>
+            </div>
+            <p>Logos, infografías, vídeos y animaciones</p>
+
+            <h3>📱 Programación de Aplicaciones</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">Scratch</span>
+                <span class="tech-badge">App Inventor</span>
+                <span class="tech-badge">Python</span>
+            </div>
+            <p>Desde entornos visuales hasta código profesional</p>
+        </div>
+
+        <!-- Diapositiva 6: Metodología -->
+        <div class="slide">
+            <div class="slide-number">6 / 12</div>
+            <h2>Metodología: Aprender Haciendo</h2>
+            <div class="card">
+                <h3>📂 Aprendizaje Basado en Proyectos</h3>
+                <p>Un proyecto integrador cada trimestre<br>
+                Complejidad progresiva<br>
+                Construcción de portfolio digital</p>
+            </div>
+            <div class="card">
+                <h3>👥 Trabajo Colaborativo</h3>
+                <p>Simulación de entornos profesionales<br>
+                Uso de herramientas G Suite (Docs, Sheets, Slides)<br>
+                Metodologías ágiles</p>
+            </div>
+            <div class="card">
+                <h3>📊 Evaluación Continua</h3>
+                <p>Proceso + Resultado final<br>
+                Documentación del proyecto<br>
+                Resolución creativa de problemas</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 7: Conexión Mundo Real -->
+        <div class="slide">
+            <div class="slide-number">7 / 12</div>
+            <h2>Conexión con el Mundo Real</h2>
+            <h3>💼 Sector Tecnológico Andaluz</h3>
+            <div class="grid">
+                <div class="grid-item">
+                    <h4>📍 Málaga</h4>
+                    <p>Valle tecnológico<br>Startups y empresas internacionales</p>
+                </div>
+                <div class="grid-item">
+                    <h4>📍 Sevilla</h4>
+                    <p>Hub de innovación<br>Desarrollo de software</p>
+                </div>
+                <div class="grid-item">
+                    <h4>📍 Granada</h4>
+                    <p>Investigación y desarrollo<br>Inteligencia artificial</p>
+                </div>
+            </div>
+            <h3>🚀 Habilidades Transversales</h3>
+            <p>El pensamiento computacional es útil en CUALQUIER carrera:<br>
+            Medicina • Arquitectura • Ingeniería • Economía • Arte • Comunicación</p>
+        </div>
+
+        <!-- Diapositiva 8: Casos de Éxito -->
+        <div class="slide">
+            <div class="slide-number">8 / 12</div>
+            <h2>Empresas Tecnológicas Andaluzas 🚀</h2>
+            <ul>
+                <li><strong>Freepik (Málaga)</strong> - Líder mundial en recursos gráficos</li>
+                <li><strong>Besoccer (Sevilla)</strong> - Plataforma deportiva internacional</li>
+                <li><strong>Cliengo (Córdoba)</strong> - Software de atención al cliente</li>
+                <li><strong>47 Degrees (Cádiz)</strong> - Consultoría tecnológica global</li>
+                <li><strong>VirusTotal (Málaga)</strong> - Ahora parte de Google</li>
+            </ul>
+            <div class="card" style="margin-top: 40px;">
+                <h3>💡 Durante el curso:</h3>
+                <p>• Analizaremos casos de éxito reales<br>
+                • Invitaremos a profesionales del sector<br>
+                • Visitaremos empresas tecnológicas locales</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 9: Actividad Práctica -->
+        <div class="slide">
+            <div class="slide-number">9 / 12</div>
+            <h2>Actividad de Introducción 📝</h2>
+            <div class="activity-box">
+                <h3>🤔 Reflexión: Analiza tu App Favorita</h3>
+                <p style="color: #856404;">Elige una aplicación que uses habitualmente (Instagram, Spotify, un videojuego...)</p>
+            </div>
+            <h3>Aplica el Pensamiento Computacional:</h3>
+            <ul>
+                <li><strong>Descomposición:</strong> ¿Cuáles son sus componentes básicos?</li>
+                <li><strong>Patrones:</strong> ¿Qué elementos se repiten en su funcionamiento?</li>
+                <li><strong>Abstracción:</strong> ¿Cuáles son las 3 funciones esenciales?</li>
+                <li><strong>Algoritmo:</strong> Describe paso a paso una función básica</li>
+            </ul>
+            <p style="text-align: center; margin-top: 40px;">
+                <span class="highlight">De usuarios pasivos a creadores digitales</span>
+            </p>
+        </div>
+
+        <!-- Diapositiva 10: Herramientas -->
+        <div class="slide">
+            <div class="slide-number">10 / 12</div>
+            <h2>Recursos y Herramientas 🛠️</h2>
+            <div class="card">
+                <h3>💻 Software Libre y Gratuito</h3>
+                <p>Todo accesible desde casa<br>Sin costes adicionales</p>
+            </div>
+            <div class="card">
+                <h3>🌐 Portfolio Digital</h3>
+                <p>Tus proyectos organizados<br>Muestra tu trabajo<br>Preparado para el futuro profesional</p>
+            </div>
+            <div class="card">
+                <h3>☁️ Google Workspace</h3>
+                <p>Google Docs para documentación<br>Google Sheets para datos<br>Google Slides para presentaciones<br>Google Drive para almacenamiento</p>
+            </div>
+            <div class="card">
+                <h3>📚 Google Classroom</h3>
+                <p>Materiales del curso<br>Tutoriales y recursos<br>Entrega de proyectos<br>Comunicación con la clase</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 11: Próximos Pasos -->
+        <div class="slide">
+            <div class="slide-number">11 / 12</div>
+            <h2>Próximos Pasos 🎯</h2>
+            <h3>📅 Esta Semana:</h3>
+            <ul>
+                <li>Configurar cuenta de Google Workspace del centro</li>
+                <li>Unirse a Google Classroom (código: <span class="highlight">[CÓDIGO]</span>)</li>
+                <li>Instalar el software necesario</li>
+                <li>Completar la actividad de reflexión</li>
+            </ul>
+            <h3>📚 Próxima Clase:</h3>
+            <ul>
+                <li>Introducción práctica a HTML</li>
+                <li>Crear vuestra primera página web</li>
+                <li>Conceptos básicos de estructura web</li>
+            </ul>
+        </div>
+
+        <!-- Diapositiva 12: Cierre -->
+        <div class="slide">
+            <div class="slide-number">12 / 12</div>
+            <h1>¡Bienvenidos al Mundo Digital! 🚀</h1>
+            <div style="text-align: center; margin-top: 60px;">
+                <p style="font-size: 1.6em; line-height: 1.8;">
+                    <span class="highlight">No importa vuestro nivel previo</span><br><br>
+                    Con trabajo, creatividad y pensamiento estructurado,<br>
+                    todos podréis alcanzar los objetivos del curso<br><br>
+                    <strong>¿Listos para crear el futuro digital?</strong>
+                </p>
+                <div style="margin-top: 60px;">
+                    <span class="emoji">💪</span>
+                    <span class="emoji">🎨</span>
+                    <span class="emoji">💻</span>
+                    <span class="emoji">🚀</span>
+                    <span class="emoji">✨</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn" onclick="changeSlide(-1)">⬅ Anterior</button>
+        <button id="nextBtn" onclick="changeSlide(1)">Siguiente ➡</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 12;
+
+        function showSlide(n) {
+            const slides = document.getElementsByClassName('slide');
+            
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide - 1].classList.add('active');
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') changeSlide(-1);
+            if (event.key === 'ArrowRight') changeSlide(1);
+            if (event.key === 'Home') {
+                currentSlide = 1;
+                showSlide(1);
+            }
+            if (event.key === 'End') {
+                currentSlide = totalSlides;
+                showSlide(totalSlides);
+            }
+        });
+
+        // Initialize
+        showSlide(1);
+
+        // Fullscreen support
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'f' || event.key === 'F') {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
