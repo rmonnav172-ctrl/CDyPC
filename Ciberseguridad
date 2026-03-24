@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tema 7: Fundamentos de Ciberseguridad - 1º Bach</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0b10;
+            --accent-color: #00f2ff;
+            --text-color: #e0e0e0;
+            --card-bg: #1a1c25;
+            --danger: #ff0055;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        /* Contenedor de Diapositivas */
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        section {
+            min-width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            text-align: center;
+            position: relative;
+        }
+
+        h1, h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 0 0 10px var(--accent-color); }
+        h2 { font-size: 2rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; }
+
+        p { font-size: 1.2rem; max-width: 800px; line-height: 1.6; }
+
+        /* Tarjetas Interactivas */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 80%;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid var(--accent-color);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+        }
+
+        /* Controles de Navegación */
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        button {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: var(--accent-color);
+            width: 0%;
+            transition: 0.3s;
+            z-index: 101;
+        }
+
+        /* Estilo para casos de estudio */
+        .alert-box {
+            background: rgba(255, 0, 85, 0.1);
+            border: 1px solid var(--danger);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="slide-container" id="slider">
+    
+    <section>
+        <h1>CIBERSEGURIDAD</h1>
+        <p>Fundamentos de Seguridad Informática para 1º de Bachillerato</p>
+        <p style="color: var(--accent-color); font-weight: bold;">[ Presiona la flecha para comenzar ]</p>
+    </section>
+
+    <section>
+        <h2>01. Conceptos Básicos</h2>
+        <p>La ciberseguridad no es solo "hackear", es el conjunto de procedimientos y herramientas para proteger la información en sistemas interconectados.</p>
+        <div class="grid">
+            <div class="card" onclick="alert('Física: Candados, cámaras, vigilantes.\nLógica: Contraseñas, firewalls, cifrado.')">
+                <h3>Seguridad Física vs Lógica</h3>
+                <p>Pulsa para ver la diferencia.</p>
+            </div>
+            <div class="card">
+                <h3>Objetivo</h3>
+                <p>Proteger el hardware, el software y, lo más importante: <b>los DATOS</b>.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>02. Pilares de la Seguridad</h2>
+        <p>Cualquier sistema seguro debe cumplir tres principios fundamentales:</p>
+        <div class="grid">
+            <div class="card"><h3>Confidencialidad</h3><p>Solo personal autorizado accede.</p></div>
+            <div class="card"><h3>Integridad</h3><p>La información no se altera.</p></div>
+            <div class="card"><h3>Disponibilidad</h3><p>Acceso siempre que se necesite.</p></div>
+        </div>
+        <p><small>* Bonus: No repudio y Autenticación.</small></p>
+    </section>
+
+    <section>
+        <h2>03. El Bestiario del Malware</h2>
+        <div class="grid">
+            <div class="card"><h4>Virus y Gusanos</h4><p>Autoreplicación y daño directo.</p></div>
+            <div class="card" style="border-color: var(--danger);"><h4>Ransomware</h4><p>Secuestro de datos por rescate.</p></div>
+            <div class="card"><h4>Ingeniería Social</h4><p>El arte de engañar al usuario (Phishing).</p></div>
+        </div>
+        <button onclick="toggleAlert()">¿Qué pasó en WannaCry?</button>
+        <div id="wannaCryAlert" class="alert-box">
+            <b>Caso WannaCry (2017):</b> Un ataque global de ransomware que paralizó hospitales y empresas como Telefónica usando una vulnerabilidad de Windows.
+        </div>
+    </section>
+
+    <section>
+        <h2>04. Tu Escudo Digital</h2>
+        <p>¿Cómo nos protegemos? Medidas esenciales:</p>
+        <ul style="text-align: left; font-size: 1.2rem;">
+            <li>🛡️ <b>Actualizaciones de Software:</b> Tapan agujeros de seguridad.</li>
+            <li>🔑 <b>MFA (Doble Factor):</b> Un password ya no es suficiente.</li>
+            <li>💾 <b>Backups:</b> Si no hay copia, el dato no existe.</li>
+            <li>🌐 <b>VPN y Redes Seguras:</b> Cuidado con el Wi-Fi público.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>¡Reto Final!</h2>
+        <p>Analiza el correo sospechoso que te enviará el profesor y detecta 3 señales de Phishing.</p>
+        <p><i>Contenido basado en: lopegonzalez.es</i></p>
+        <button onclick="location.reload()">Reiniciar</button>
+    </section>
+
+</div>
+
+<div class="controls">
+    <button id="prevBtn">← ANTERIOR</button>
+    <button id="nextBtn">SIGUIENTE →</button>
+</div>
+
+<script>
+    const slider = document.getElementById('slider');
+    const slides = document.querySelectorAll('section');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressBar = document.getElementById('progressBar');
+
+    let currentSlide = 0;
+
+    function updateSlider() {
+        slider.style.transform = `translateX(-${currentSlide * 100}vw)`;
+        let progress = ((currentSlide + 1) / slides.length) * 100;
+        progressBar.style.width = `${progress}%`;
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            updateSlider();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlider();
+        }
+    });
+
+    function toggleAlert() {
+        const box = document.getElementById('wannaCryAlert');
+        box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Soporte para teclado
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "ArrowRight") nextBtn.click();
+        if (e.key === "ArrowLeft") prevBtn.click();
+    });
+</script>
+
+</body>
+</html>
